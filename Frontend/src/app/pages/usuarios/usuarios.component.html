@@ -18,7 +18,7 @@
 </button>
 
 <!-- Formulario de Usuarios -->
-<div class="container-fluid mt--7" *ngIf="formularioUsuario">
+<div class="container-fluid mt--10" *ngIf="formularioUsuario">
   <div class="row justify-content-center">
     <div class="col-lg-6">
       <div class="card shadow">
@@ -83,7 +83,7 @@
             <th>Nombre</th>
             <th>Apellido</th>
             <th>Correo Electronico</th>
-            <th>Contraseña</th>
+
             <th>Rol</th>
             <th>Acciones</th>
           </tr>
@@ -94,7 +94,7 @@
             <td>{{ usuario.nombre }}</td>
             <td>{{ usuario.apellido }}</td>
             <td>{{ usuario.correo_electronico }}</td>
-            <td>{{ usuario.contrasenia }}</td>
+
             <td>{{ usuario.rol }}</td>
             <td>
               <!-- Botones de acciones -->
