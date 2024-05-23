@@ -7,23 +7,22 @@ const sequelize = new Sequelize(database.DB_NAME, database.DB_USER, database.DB_
   dialect: 'mysql'
 });
 
-sequelize.authenticate()
-  .then(() => console.log('Conexión establecida con la base de datos.'))
-  .catch(error => console.error('Error al conectar con la base de datos: ', error));
-
-const Categoria = sequelize.define('categoria', {
+const Orden = sequelize.define('orden', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  nombre: {
-    type: DataTypes.STRING(50),
-    allowNull: false,
-    unique: true
+  monto_total: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false
   },
-  descripcion: {
-    type: DataTypes.STRING(255),
+  pagado: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false
+  },
+  cambio: {
+    type: DataTypes.DECIMAL(10, 2),
     allowNull: false
   },
   fecha_creacion: {
@@ -32,7 +31,7 @@ const Categoria = sequelize.define('categoria', {
     allowNull: false
   },
   estado: {
-    type: DataTypes.ENUM('ACTIVO', 'INACTIVO'),
+    type: DataTypes.ENUM('PENDIENTE', 'ENTREGADO'),
     allowNull: false
   }
 }, {
@@ -40,7 +39,7 @@ const Categoria = sequelize.define('categoria', {
 });
 
 sequelize.sync()
-  .then(() => console.log('Tabla categoria creada'))
+  .then(() => console.log('Tablas creadas'))
   .catch(error => console.error('Error', error));
 
-module.exports = Categoria;
+module.exports = Orden;

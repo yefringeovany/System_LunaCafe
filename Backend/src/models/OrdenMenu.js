@@ -7,56 +7,48 @@ const sequelize = new Sequelize(database.DB_NAME, database.DB_USER, database.DB_
   dialect: 'mysql'
 });
 
-const Categoria = require('./Categoria');
+const Menu = require('./Menu');
+const Orden = require('./Orden');
 
 sequelize.authenticate()
   .then(() => console.log('Conexión establecida con la base de datos.'))
   .catch(error => console.error('Error al conectar con la base de datos: ', error));
 
-const Menu = sequelize.define('menu', {
+const OrdenMenu = sequelize.define('orden_menu', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  categoria_id: {
+  orden_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: Categoria,
+      model: Orden,
       key: 'id'
     }
   },
-  nombre: {
-    type: DataTypes.STRING(50),
+  menu_id: {
+    type: DataTypes.INTEGER,
     allowNull: false,
-    unique: true
+    references: {
+      model: Menu,
+      key: 'id'
+    }
   },
-  descripcion: {
-    type: DataTypes.STRING(255),
-    allowNull: false
-  },
-  precio: {
-    type: DataTypes.DECIMAL(10, 2),
-    allowNull: false
-  },
-  fecha_creacion: {
-    type: DataTypes.DATEONLY,
-    defaultValue: DataTypes.NOW,
-    allowNull: false
-  },
-  estado: {
-    type: DataTypes.ENUM('ACTIVO', 'INACTIVO'),
+  cantidad: {
+    type: DataTypes.INTEGER,
     allowNull: false
   }
 }, {
   freezeTableName: true
 });
 
-Menu.belongsTo(Categoria, { foreignKey: 'categoria_id' });
+Orden.belongsToMany(Menu, { through: OrdenMenu, foreignKey: 'orden_id' });
+Menu.belongsToMany(Orden, { through: OrdenMenu, foreignKey: 'menu_id' });
 
 sequelize.sync()
-  .then(() => console.log('Tabla menu creada'))
+  .then(() => console.log('Tabla orden_menu creada'))
   .catch(error => console.error('Error', error));
 
-module.exports = Menu;
+module.exports = OrdenMenu;
